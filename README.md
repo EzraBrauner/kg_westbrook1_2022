@@ -1,1 +1,1 @@
-# kg_westbrook1_2022
+This is Ezra Brauner's submission for Kargo's Summer 2020 software engineer internship assessment.
