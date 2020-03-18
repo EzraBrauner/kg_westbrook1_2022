@@ -68,12 +68,25 @@ def char_mapping_exists(s1, s2):
         if freq2 < freq1:
             print("false")
             return
-        # if there are not enough characters in s1 to map to s2,
-        # then characters that only appear once must map to those characters in s2
+        # if there are not enough sets of characters equal in length to the set in s2,
+        # then sets of smaller lengths are mapped to the set in s2
         elif freq2 > freq1:
-            # any remaining unmapped characters in the set from s2 have single characters mapped to them
-            s1FreqOfFreq[0] -= (freq + 1) * (freq2 - freq1)
-            if s1FreqOfFreq[0] < 0:
+            numLettersS2 = s2FreqOfFreq[freq] * (freq + 1)
+            i = freq + 1
+            # frequencies are compared with the number of characters in s2 to combine them such that every character
+            # in the set in s2 is mapped to one in s1
+            while numLettersS2 > 0 and i >= 0:
+                i -= 1
+                if s1FreqOfFreq[i] == 0:
+                    continue
+                # find how many groups of frequencies (i + 1) can be mapped to the set in s2
+                numLettersS1 = s1FreqOfFreq[i] * (i + 1)
+                s1GroupsUsed = min(numLettersS2 // (i + 1), numLettersS1 // (i + 1))
+                numLettersS2 -= s1GroupsUsed * (i + 1)
+                # update the number of available sets of frequency (i + 1)
+                s1FreqOfFreq[i] -= s1GroupsUsed
+            # if numLettersS2 is negative, then smaller sets from s1 could not be combined evenly
+            if numLettersS2 < 0:
                 print("false")
                 return
     print("true")
